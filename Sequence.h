@@ -5,8 +5,9 @@
 #ifndef RCT_SEQUENCE_H_
 #define RCT_SEQUENCE_H_
 
+#include <array>
 #include <functional>
-#include <type_traits>
+#include <utility>
 
 namespace rct {
 enum class SequenceStatus {
@@ -22,7 +23,9 @@ template<int N>
 struct Sequence {
   // Requirement checking for template arguments
   static_assert(0 < N);
-  Sequence(const SeqFunc (&args)[N]) noexcept : funcs_{args} {}
+  Sequence(const SeqFunc (&args)[N]) noexcept : Sequence{args, std::make_index_sequence<N>{}} {}
+  template<std::size_t... I>
+  Sequence(const SeqFunc (&args)[N], std::index_sequence<I...>) noexcept : funcs_{args[I]...} {}
   static constexpr int size() noexcept {
     return N;
   }
