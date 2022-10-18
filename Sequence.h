@@ -10,6 +10,7 @@
 #include <utility>
 
 namespace rct {
+// シーケンスの状態
 enum class SequenceStatus {
   proceed,  // 継続
   next,     // 次へ
